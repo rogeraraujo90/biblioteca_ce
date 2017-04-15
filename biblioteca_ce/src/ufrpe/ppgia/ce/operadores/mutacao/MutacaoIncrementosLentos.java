@@ -4,7 +4,7 @@ import ufrpe.ppgia.ce.base.OperadorMutacao;
 import ufrpe.ppgia.ce.base.solucao.SolucaoInteira;
 
 public class MutacaoIncrementosLentos implements OperadorMutacao<SolucaoInteira> {
-	private double pm = 0.5;
+	private double pm = 0.1;
 
 	@Override
 	public SolucaoInteira executarMutacao(SolucaoInteira pai) {

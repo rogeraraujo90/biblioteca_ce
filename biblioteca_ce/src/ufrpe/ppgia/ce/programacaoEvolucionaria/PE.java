@@ -1,5 +1,6 @@
 package ufrpe.ppgia.ce.programacaoEvolucionaria;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import ufrpe.ppgia.ce.base.AE;
@@ -32,8 +33,14 @@ public class PE extends AE<SolucaoReal>{
 
 	@Override
 	public List<SolucaoReal> inicializar() {
-		// TODO Auto-generated method stub
-		return null;
+		List<SolucaoReal> populacao = new ArrayList<SolucaoReal>();
+		
+		for (int i = 0; i < 100; i++) {
+			populacao.add(new SolucaoReal(10));
+			
+		}
+		
+		return populacao;
 	}
 
 	@Override

@@ -14,6 +14,7 @@ public class SolucaoBinaria implements Solucao<Integer> {
 	protected double fitness;
 	
 	public SolucaoBinaria(int n) {
+		this.n = n;
 		cromossomo = new Integer[n];
 	}
 

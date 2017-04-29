@@ -11,7 +11,7 @@ public class SolucaoBinaria implements Solucao<Integer> {
 
 	protected int n;
 	
-	protected double fitness;
+	protected double fitness = Integer.MAX_VALUE;
 	
 	public SolucaoBinaria(int n) {
 		this.n = n;

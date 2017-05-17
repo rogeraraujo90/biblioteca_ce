@@ -6,18 +6,18 @@ import java.util.List;
 import java.util.Random;
 
 import ufrpe.ppgia.ce.base.OperadorSelecao;
-import ufrpe.ppgia.ce.base.solucao.SolucaoInteira;
+import ufrpe.ppgia.ce.base.solucao.SolucaoBinaria;
 
-public class SelecaoFPS implements OperadorSelecao<SolucaoInteira>{
+public class SelecaoFPSBinaria implements OperadorSelecao<SolucaoBinaria>{
 	@Override
-	public List<SolucaoInteira> selecionar(List<SolucaoInteira> solutionSet) {
-		solutionSet.sort(Comparator.comparingDouble(SolucaoInteira::getFitness));
-		List<SolucaoInteira> pais = new ArrayList<>();
+	public List<SolucaoBinaria> selecionar(List<SolucaoBinaria> solutionSet) {
+		solutionSet.sort(Comparator.comparingDouble(SolucaoBinaria::getFitness));
+		List<SolucaoBinaria> pais = new ArrayList<>();
 		
 		double totalFitness = 0;
 		Double[] fitnessNormalizado = new Double[solutionSet.size()];
 		
-		for(SolucaoInteira solucao : solutionSet) {
+		for(SolucaoBinaria solucao : solutionSet) {
 			totalFitness += solucao.getFitness();
 		}
 		
@@ -25,7 +25,7 @@ public class SelecaoFPS implements OperadorSelecao<SolucaoInteira>{
 			fitnessNormalizado[i] = solutionSet.get(i).getFitness() / totalFitness;
 		}
 		
-		List<SolucaoInteira> roletaDePais = new ArrayList<>();
+		List<SolucaoBinaria> roletaDePais = new ArrayList<>();
 		for(int i = 0; i < solutionSet.size(); i++) {
 			double fitnessParcial = fitnessNormalizado[0];
 			while(fitnessParcial <= fitnessNormalizado[i]) {
@@ -52,25 +52,25 @@ public class SelecaoFPS implements OperadorSelecao<SolucaoInteira>{
 	
 	public static void main(String[] args) {
 		
-		SolucaoInteira p1 = new SolucaoInteira(); 
-		SolucaoInteira p2 = new SolucaoInteira(); 
-		SolucaoInteira p3 = new SolucaoInteira(); 
-		SolucaoInteira p4 = new SolucaoInteira();
-		SolucaoInteira p5 = new SolucaoInteira(); 
-		SolucaoInteira p6 = new SolucaoInteira(); 
-		SolucaoInteira p7 = new SolucaoInteira(); 
-		SolucaoInteira p8 = new SolucaoInteira();
+		SolucaoBinaria p1 = new SolucaoBinaria(1); 
+		SolucaoBinaria p2 = new SolucaoBinaria(1); 
+		SolucaoBinaria p3 = new SolucaoBinaria(1); 
+		SolucaoBinaria p4 = new SolucaoBinaria(1);
+		SolucaoBinaria p5 = new SolucaoBinaria(1); 
+		SolucaoBinaria p6 = new SolucaoBinaria(1); 
+		SolucaoBinaria p7 = new SolucaoBinaria(1); 
+		SolucaoBinaria p8 = new SolucaoBinaria(1);
 		
 		p1.setFitness(9);
 		p2.setFitness(4);
 		p3.setFitness(3);
 		p4.setFitness(1);
-		p5.setFitness(9);
-		p6.setFitness(4);
-		p7.setFitness(3);
-		p8.setFitness(11);
+		p5.setFitness(5);
+		p6.setFitness(7);
+		p7.setFitness(2);
+		p8.setFitness(6);
 		
-		ArrayList<SolucaoInteira> teste = new ArrayList<SolucaoInteira>();
+		ArrayList<SolucaoBinaria> teste = new ArrayList<SolucaoBinaria>();
 		
 		teste.add(p1);
 		teste.add(p2);
@@ -81,9 +81,9 @@ public class SelecaoFPS implements OperadorSelecao<SolucaoInteira>{
 		teste.add(p7);
 		teste.add(p8);
 		
-		SelecaoFPS sfps = new SelecaoFPS();
+		SelecaoFPSBinaria sfps = new SelecaoFPSBinaria();
 		
-		List<SolucaoInteira> resp = sfps.selecionar(teste);
+		List<SolucaoBinaria> resp = sfps.selecionar(teste);
 		System.out.println(resp.size());
 		System.out.println(resp.get(0).getFitness());
 		System.out.println(resp.get(1).getFitness());

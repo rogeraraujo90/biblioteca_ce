@@ -6,7 +6,7 @@ public class SolucaoReal implements Solucao<Double> {
 	
 	/* 
 	 * Vetor que representa o conjunto de genes do cromossomo
-	*/
+	 * */
 	protected Double[] cromossomo;
 	
 	/*
@@ -27,7 +27,7 @@ public class SolucaoReal implements Solucao<Double> {
 	/*
 	 * Valor que representa a aptidão atual do indivíduo
 	 * */
-	protected double fitness;
+	protected double fitness = Double.MAX_VALUE;
 	
 	public SolucaoReal(int n) {
 		/*
@@ -40,8 +40,11 @@ public class SolucaoReal implements Solucao<Double> {
 		this.limiteSuperior = new Double[n];
 		
 		for (int i = 0; i < n; i++) {
-			this.limiteInferior[i] = Double.MIN_VALUE;
-			this.limiteSuperior[i] = Double.MAX_VALUE;
+//			this.limiteInferior[i] = Double.MIN_VALUE;
+//			this.limiteSuperior[i] = Double.MAX_VALUE;
+			
+			this.limiteInferior[i] = 1.0;
+			this.limiteSuperior[i] = 10.0;
 			
 		}
 		

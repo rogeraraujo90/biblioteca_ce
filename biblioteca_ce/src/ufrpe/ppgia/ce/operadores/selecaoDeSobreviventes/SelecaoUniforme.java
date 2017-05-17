@@ -1,4 +1,4 @@
-package biblioteca_ce;
+package ufrpe.ppgia.ce.operadores.selecaoDeSobreviventes;
 
 import java.util.ArrayList;
 import java.util.Random;

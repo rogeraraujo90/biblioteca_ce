@@ -5,11 +5,11 @@ import ufrpe.ppgia.ce.base.solucao.SolucaoInteira;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class MutacaoInicializacaoAleatoria implements OperadorMutacao<SolucaoInteira> {
-	private double pm = 0.1;
+	private double pm = 0.1d;
 
 	@Override
 	public SolucaoInteira executarMutacao(SolucaoInteira pai) {
-		SolucaoInteira mutacao = new SolucaoInteira();
+		SolucaoInteira mutacao = new SolucaoInteira(pai.getN());
 		
 		for(int i = 0; i < pai.getN(); i++) {
 			if(Math.random() < pm) {

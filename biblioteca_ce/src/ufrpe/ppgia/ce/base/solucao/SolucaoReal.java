@@ -100,7 +100,7 @@ public class SolucaoReal implements Solucao<Double> {
 	}
 
 	@Override
-	protected Object clone() throws CloneNotSupportedException {
+	public SolucaoReal clone() {
 		
 		SolucaoReal solucaoReal = new SolucaoReal(this.n);
 		solucaoReal.cromossomo = this.cromossomo;

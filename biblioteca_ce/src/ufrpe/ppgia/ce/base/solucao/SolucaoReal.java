@@ -99,4 +99,16 @@ public class SolucaoReal implements Solucao<Double> {
 		return this.n;
 	}
 
+	@Override
+	protected Object clone() throws CloneNotSupportedException {
+		
+		SolucaoReal solucaoReal = new SolucaoReal(this.n);
+		solucaoReal.cromossomo = this.cromossomo;
+		solucaoReal.fitness = this.fitness;
+		solucaoReal.limiteInferior = this.limiteInferior;
+		solucaoReal.limiteSuperior = this.limiteSuperior;
+		
+		return solucaoReal;
+	}
+
 }

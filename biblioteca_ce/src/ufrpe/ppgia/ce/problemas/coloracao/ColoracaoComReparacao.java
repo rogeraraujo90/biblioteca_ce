@@ -56,14 +56,19 @@ public class ColoracaoComReparacao extends AE<SolucaoInteira> implements Problem
 	
 	@Override
 	public void avaliar(SolucaoInteira solucao) {
-		int countVermelhos = 0;
+		int countErros = 0;
 		for (int i = 0 ; i < solucao.getN(); i ++) {
-			if(solucao.getValor(i) == COR_VERMELHO) {
-				countVermelhos += 1;
+			Integer corNodo = solucao.getValor(i);
+			Integer[] vizinhos = MAPA[i];
+			
+			for(int j = 0; j < vizinhos.length; j ++) {
+				if(corNodo == solucao.getValor(vizinhos[j] - 1)) {
+					countErros += 1;
+				}
 			}
 		}
 		
-		solucao.setFitness(countVermelhos);
+		solucao.setFitness(countErros);
 	}
 
 	@Override
@@ -88,8 +93,8 @@ public class ColoracaoComReparacao extends AE<SolucaoInteira> implements Problem
 	@Override
 	public boolean parar(List<SolucaoInteira> pop) {
 		pop.sort(Comparator.comparingDouble(SolucaoInteira::getFitness));
-		System.out.println("Melhor Fitness: " + pop.get(99).getFitness());
-		return pop.get(99).getFitness() == 4;
+		System.out.println("Melhor Fitness: " + pop.get(0).getFitness());
+		return pop.get(0).getFitness() == 0;
 	}
 
 	@Override

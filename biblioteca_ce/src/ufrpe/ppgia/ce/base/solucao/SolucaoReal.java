@@ -110,7 +110,5 @@ public class SolucaoReal implements Solucao<Double> {
 		
 		return solucaoReal;
 	}
-	
-	
 
 }

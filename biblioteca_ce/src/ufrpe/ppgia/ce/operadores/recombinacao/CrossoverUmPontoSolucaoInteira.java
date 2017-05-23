@@ -12,8 +12,8 @@ public class CrossoverUmPontoSolucaoInteira implements OperadorRecombinacao<Solu
 	public SolucaoInteira[] recombinar(SolucaoInteira pai1, SolucaoInteira pai2) {
 		if(Math.random() <= pr) {
 			int pontoDeCrossover = new Random().nextInt(pai1.getN() - 1) + 1;
-			SolucaoInteira filho1 = new SolucaoInteira(pai1.getN());
-			SolucaoInteira filho2 = new SolucaoInteira(pai1.getN());
+			SolucaoInteira filho1 = pai1.clone();
+			SolucaoInteira filho2 = pai1.clone();
 			
 			for(int i = 0; i < pontoDeCrossover; i++) {
 				filho1.setValor(i, pai1.getValor(i));

@@ -4,11 +4,19 @@ import ufrpe.ppgia.ce.base.OperadorMutacao;
 import ufrpe.ppgia.ce.base.solucao.SolucaoInteira;
 
 public class MutacaoIncrementosLentos implements OperadorMutacao<SolucaoInteira> {
-	private double pm = 0.1;
+	private double pm = 0.1d;
+
+	public double getPm() {
+		return pm;
+	}
+
+	public void setPm(double pm) {
+		this.pm = pm;
+	}
 
 	@Override
 	public SolucaoInteira executarMutacao(SolucaoInteira pai) {
-		SolucaoInteira mutacao = new SolucaoInteira(pai.getN());
+		SolucaoInteira mutacao = pai.clone();
 		
 		for(int i = 0; i < pai.getN(); i++) {
 			if(Math.random() < pm) {

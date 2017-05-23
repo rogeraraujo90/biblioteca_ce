@@ -2,7 +2,7 @@ package ufrpe.ppgia.ce.base.solucao;
 
 import ufrpe.ppgia.ce.base.Solucao;
 
-public class SolucaoInteira implements Solucao<Integer> {
+public class SolucaoInteira implements Solucao<Integer>, Cloneable {
 	protected Integer[] cromossomo;
 
 	protected Integer[] limiteInferior;
@@ -77,4 +77,13 @@ public class SolucaoInteira implements Solucao<Integer> {
 		return n;
 	}
 
+	@Override
+	public SolucaoInteira clone(){
+        SolucaoInteira clone = new SolucaoInteira(this.n);
+        clone.cromossomo = this.cromossomo;
+        clone.fitness = this.fitness;
+        clone.limiteInferior = this.limiteInferior;
+        clone.limiteSuperior = this.limiteSuperior;
+		return clone;
+	}
 }

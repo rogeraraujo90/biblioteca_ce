@@ -11,12 +11,11 @@ public class RecombinacaoAritmetica implements OperadorRecombinacao<SolucaoReal>
 	private Random random = new Random();
 	private double pr = 0.7; 
 	
-	private void setPr(double pr) {
+	public void setPr(double pr) {
 		this.pr = pr;
 	}
 	
 	public SolucaoReal[] recombinar(SolucaoReal pai1, SolucaoReal pai2) {
-		// TODO Auto-generated method stub
 		int k =  random.nextInt(pai1.getN()-1)+1;
 		
 				

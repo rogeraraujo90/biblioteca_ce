@@ -1,7 +1,6 @@
 package ufrpe.ppgia.ce.operadores.mutacao;
 
 import ufrpe.ppgia.ce.base.OperadorMutacao;
-import ufrpe.ppgia.ce.base.Solucao;
 import ufrpe.ppgia.ce.base.solucao.SolucaoReal;
 
 public class MutacaoUniforme implements OperadorMutacao<SolucaoReal> {
@@ -38,6 +37,10 @@ public class MutacaoUniforme implements OperadorMutacao<SolucaoReal> {
 		}
 		
 		return mutacao;
+	}
+	
+	public void setPM(double pm) {
+		this.PM = pm;
 	}
 
 //	public static void main(String[] args) {

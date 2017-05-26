@@ -51,7 +51,7 @@ public class Griewank extends PE implements Problema<SolucaoReal> {
 		
 		Griewank test = new Griewank();
 		
-		for(int i = 0; i < 1; i++) {
+		for(int i = 0; i < 30; i++) {
 			long timeIn = System.nanoTime();
 			
 			test.executar();
@@ -59,6 +59,8 @@ public class Griewank extends PE implements Problema<SolucaoReal> {
 			double dt = (System.nanoTime() - timeIn) * (1e6);
 			
 			System.out.println("Total Time: " + dt);
+			
+			
 		}
 	}
 	

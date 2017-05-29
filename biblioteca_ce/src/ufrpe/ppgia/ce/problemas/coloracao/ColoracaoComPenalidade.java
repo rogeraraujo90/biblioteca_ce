@@ -20,30 +20,40 @@ public class ColoracaoComPenalidade extends AE<SolucaoInteira> implements Proble
 	private static Integer COR_VERDE = 2;
 	private static Integer COR_VERMELHO = 3;
 
-	public static Integer[][] MAPA = {{2, 4, 6}, {1, 3, 10}, {2, 5, 8},
-			{1, 7, 8}, {3, 6, 7}, {1, 5, 9}, {4, 5, 10}, {3, 4, 9},
-			{6, 8, 10}, {2, 7, 9}};
-	
-	
+	public static Integer[][] MAPA = {
+			{2, 4, 6}, 
+			{1, 3, 10}, 
+			{2, 5, 8}, 
+			{1, 7, 8}, 
+			{3, 6, 7}, 
+			{1, 5, 9}, 
+			{4, 5, 10}, 
+			{3, 4, 9}, 
+			{6, 8, 10}, 
+			{2, 7, 9} 
+			};
 	
 	@Override
 	public void executar() {
 		List<SolucaoInteira> pop = inicializar();
+		
 		for (SolucaoInteira individuo : pop) {
 			avaliar(individuo);
 		}
 		
 		int iteracao = 1;
+		
 		while (!parar(pop)) {
-			System.out.println("Iteração: " + iteracao);
+			System.out.println("IteraÃ§Ã£o: " + iteracao);
 			iteracao++;
+			
 			SolucaoInteira[] pais = selecionarPais(pop);
 			SolucaoInteira[] descendentes = recombinar(pais);
 			
 			for(int i = 0; i < descendentes.length; i++) {
-				validar(descendentes[i]);
+//				validar(descendentes[i]);
 				descendentes[i] = executarMutacao(descendentes[i]);
-				validar(descendentes[i]);
+//				validar(descendentes[i]);
 				avaliar(descendentes[i]);
 			}
 			
@@ -64,6 +74,8 @@ public class ColoracaoComPenalidade extends AE<SolucaoInteira> implements Proble
 		}
 		
 		solucao.setFitness(countVermelhos);
+		
+		penalizar(solucao);
 	}
 
 	@Override
@@ -72,13 +84,14 @@ public class ColoracaoComPenalidade extends AE<SolucaoInteira> implements Proble
 		
 		for (int i = 0; i < 100; i++) {
 			SolucaoInteira pai = new SolucaoInteira(10);
+			
 			for (int j = 0; j < pai.getN(); j++) {
 				pai.setLimiteInferior(j, 1);
 				pai.setLimiteSuperior(j, 3);
 				pai.setValor(j, random.nextInt(3) + 1);
 			}
 			
-			validar(pai);
+//			validar(pai);
 			pais.add(pai);
 		}
 		
@@ -154,7 +167,24 @@ public class ColoracaoComPenalidade extends AE<SolucaoInteira> implements Proble
 //			}
 //		}
 		
+	}
+	
+	private void penalizar(SolucaoInteira individuo) {
+		int w = 1, penalidadeTotal = 0;
 		
+		for (int i = 0; i < individuo.getN(); i++) {
+			
+			for (int j = 0; j < 3; j++) {
+				
+				if (individuo.getValor(i) == individuo.getValor( MAPA[i][j] - 1 )) {
+					penalidadeTotal += w;
+					
+				}
+				
+			}
+		}
+
+		individuo.setFitness(individuo.getFitness() + penalidadeTotal);
 		
 	}
 

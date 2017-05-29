@@ -9,9 +9,7 @@ import java.util.Random;
 
 import ufrpe.ppgia.ce.base.AE;
 import ufrpe.ppgia.ce.base.solucao.SolucaoReal;
-import ufrpe.ppgia.ce.operadores.mutacao.MutacaoBinaria;
 import ufrpe.ppgia.ce.operadores.mutacao.MutacaoUniforme;
-import ufrpe.ppgia.ce.operadores.recombinacao.CrossoverUmPonto;
 import ufrpe.ppgia.ce.operadores.recombinacao.RecombinacaoAritmetica;
 import ufrpe.ppgia.ce.operadores.selecaoDeSobreviventes.SelecaoFPSReal;
 
@@ -96,7 +94,9 @@ public class GAReal extends AE<SolucaoReal>{
 		for (int i = 0; i < this.tamanhoPop; i++){
 			SolucaoReal individuo = new SolucaoReal(10);
 			for(int j = 0; j < individuo.getN(); j++) {
-				individuo.setValor(j, (double) new Random().nextDouble());
+				individuo.setLimiteInferior(j, -5.12);
+				individuo.setLimiteSuperior(j, 5.12);
+				individuo.setValor(j, (new Random().nextDouble() * 10.24) - 5.12);
 			}
 			populacao.add(individuo);
 		}
@@ -119,7 +119,6 @@ public class GAReal extends AE<SolucaoReal>{
 	@Override
 	public boolean parar(List<SolucaoReal> pop) {
 		pop.sort(Comparator.comparingDouble(SolucaoReal::getFitness));
-		System.out.println("Melhor fitness local: " +  pop.get(0).getFitness());
 		return pop.get(0).getFitness() <= 0.0000001d;
 	}
 
@@ -139,7 +138,15 @@ public class GAReal extends AE<SolucaoReal>{
 
 	@Override
 	public List<SolucaoReal> selecionarSovreviventes(List<SolucaoReal> pop, SolucaoReal[] descendentes) {
-		return new ArrayList<SolucaoReal>(Arrays.asList(descendentes));
+		pop.sort(Comparator.comparingDouble(SolucaoReal::getFitness));
+		SolucaoReal pai = pop.get(0);
+		List<SolucaoReal> sobreviventes = new ArrayList<>();
+		sobreviventes.add(pai);
+		for(int i = 1; i < descendentes.length; i++) {
+			sobreviventes.add(descendentes[i]);
+		}
+		
+		return sobreviventes;
 	}
 
 	@Override

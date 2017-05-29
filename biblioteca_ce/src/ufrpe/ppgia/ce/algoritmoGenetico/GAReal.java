@@ -23,7 +23,7 @@ public class GAReal extends AE<SolucaoReal>{
 		}
 		
 		int iteracao = 1;
-		while (!parar(pop)) {
+		while (!parar(pop) && iteracao < 100000) {
 			iteracao++;
 			SolucaoReal[] pais = selecionarPais(pop);
 			SolucaoReal[] descendentes = recombinar(pais);
@@ -48,7 +48,9 @@ public class GAReal extends AE<SolucaoReal>{
 		for (int i = 0; i < 50; i++){
 			SolucaoReal individuo = new SolucaoReal(10);
 			for(int j = 0; j < individuo.getN(); j++) {
-				individuo.setValor(j, (double) new Random().nextDouble());
+				individuo.setLimiteInferior(j, -5.12);
+				individuo.setLimiteSuperior(j, 5.12);
+				individuo.setValor(j, (new Random().nextDouble() * 10.24) - 5.12);
 			}
 			populacao.add(individuo);
 		}
@@ -71,7 +73,6 @@ public class GAReal extends AE<SolucaoReal>{
 	@Override
 	public boolean parar(List<SolucaoReal> pop) {
 		pop.sort(Comparator.comparingDouble(SolucaoReal::getFitness));
-		System.out.println("Melhor fitness local: " +  pop.get(0).getFitness());
 		return pop.get(0).getFitness() <= 0.0000001d;
 	}
 
@@ -91,7 +92,15 @@ public class GAReal extends AE<SolucaoReal>{
 
 	@Override
 	public List<SolucaoReal> selecionarSovreviventes(List<SolucaoReal> pop, SolucaoReal[] descendentes) {
-		return new ArrayList<SolucaoReal>(Arrays.asList(descendentes));
+		pop.sort(Comparator.comparingDouble(SolucaoReal::getFitness));
+		SolucaoReal pai = pop.get(0);
+		List<SolucaoReal> sobreviventes = new ArrayList<>();
+		sobreviventes.add(pai);
+		for(int i = 1; i < descendentes.length; i++) {
+			sobreviventes.add(descendentes[i]);
+		}
+		
+		return sobreviventes;
 	}
 
 	@Override
@@ -104,7 +113,7 @@ public class GAReal extends AE<SolucaoReal>{
 		paisEmbaralhados = paisAux.toArray(paisEmbaralhados);
 		
 		RecombinacaoAritmetica cup = new RecombinacaoAritmetica();
-		cup.setPr(0.6d);
+		cup.setPr(0.9d);
 		SolucaoReal[] filhos = new SolucaoReal[pais.length];
 		
 		for(int i = 0; i < paisEmbaralhados.length; i += 2) {

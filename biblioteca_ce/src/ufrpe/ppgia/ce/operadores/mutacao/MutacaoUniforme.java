@@ -16,7 +16,7 @@ public class MutacaoUniforme implements OperadorMutacao<SolucaoReal> {
 		/*
 		 * O objeto mutacao receberá parte dos genes do pai e alguns genes mutados
 		 * */
-		SolucaoReal mutacao = new SolucaoReal(pai.getN());
+		SolucaoReal mutacao = pai.clone();
 		
 		for (int i = 0; i < pai.getN(); i++) {
 			if (Math.random() <= PM) {

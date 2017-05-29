@@ -12,6 +12,16 @@ import ufrpe.ppgia.ce.operadores.mutacao.MutacaoNaoUniforme;
 public class PE extends AE<SolucaoReal>{
 	
 	/**
+	 * Por padrão a probalidade de mutação é 0.1 
+	 */
+	private MutacaoNaoUniforme operadorMutacao = new MutacaoNaoUniforme();
+	
+	/**
+	 * Por padrão o tamanho da população é 100 
+	 */
+	private int tamanhoPop = 100;
+	
+	/**
 	 * Método executar.
 	 * Realiza toda a execução do algoritmo.
 	 */
@@ -28,14 +38,16 @@ public class PE extends AE<SolucaoReal>{
 			avaliar(solucaoReal);
 		}
 		
-		int interacao = 0;
+		int iteracao = 0;
+		System.out.print("Iteracao: " + iteracao);
+		
 		/*
 		 * Executar a Porgramação Evolutica (PE) 
 		 * enquanto a condição de parada não seja satisfeita
 		 * */
-		while (!parar(pop)) {
-			System.out.println("Interacao: " + interacao);
-			interacao++;
+		while (!parar(pop) && iteracao < 1000) {
+			
+			iteracao++;
 			
 			/*
 			 * Criar um array de descendentes do tamanho da população de pais
@@ -70,6 +82,8 @@ public class PE extends AE<SolucaoReal>{
 			 * */
 			pop = selecionarSovreviventes(pop, descendentes);
 			
+			System.out.print("Iteracao: " + iteracao);
+			
 		}
 		System.out.println("Parou");
 	}
@@ -87,7 +101,7 @@ public class PE extends AE<SolucaoReal>{
 		/*
 		 * Adiciona cada indivíduo ao array da população.
 		 * */
-		for (int i = 0; i < 100; i++) {
+		for (int i = 0; i < this.tamanhoPop; i++) {
 			populacao.add(new SolucaoReal(10));
 			
 		}
@@ -281,21 +295,36 @@ public class PE extends AE<SolucaoReal>{
 	public SolucaoReal executarMutacao(SolucaoReal pai) {
 		
 		SolucaoReal descendente = new SolucaoReal(10);
-		MutacaoNaoUniforme mutacao = new MutacaoNaoUniforme();
-		
-		/*
-		 * Definindo o PM
-		 */
-		mutacao.probabilidade = 0.1;
 		
 		/*
 		 * Executar a mutaçao
 		 */
-		descendente = mutacao.executarMutacao(pai);
+		descendente = this.operadorMutacao.executarMutacao(pai);
 		
 		return descendente;
 	}
 	
+	/**
+	 * @return the operadorMutacao
+	 */
+	public MutacaoNaoUniforme getOperadorMutacao() {
+		return operadorMutacao;
+	}
+
+	/**
+	 * @return the tamanhoPop
+	 */
+	public int getTamanhoPop() {
+		return tamanhoPop;
+	}
+
+	/**
+	 * @param tamanhoPop the tamanhoPop to set
+	 */
+	public void setTamanhoPop(int tamanhoPop) {
+		this.tamanhoPop = tamanhoPop;
+	}
+
 	/**
 	 * Testando o algoritimo
 	 */

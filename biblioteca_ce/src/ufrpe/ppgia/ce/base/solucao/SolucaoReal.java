@@ -53,6 +53,15 @@ public class SolucaoReal implements Solucao<Double> {
 		}
 		
 	}
+	
+	
+
+	/**
+	 * @return the cromossomo
+	 */
+	public Double[] getCromossomo() {
+		return cromossomo;
+	}
 
 	@Override
 	public void setValor(int indice, Double valor) {

@@ -15,6 +15,49 @@ import ufrpe.ppgia.ce.operadores.selecaoDeSobreviventes.SelecaoFPSBinaria;
 
 public class GA extends AE<SolucaoBinaria>{
 	
+	/**
+	 * Por padrão a probalidade de mutação é 0.1 
+	 */
+	private MutacaoBinaria operadorMutacao = new MutacaoBinaria();
+	
+	/**
+	 * Por padrão a probalidade de cruzamento é 1 
+	 */
+	private CrossoverUmPonto operadorCruzamento = new CrossoverUmPonto();
+	
+	/**
+	 * Por padrão o tamanho da população é 100 
+	 */
+	private int tamanhoPop = 100;
+	
+	/**
+	 * @return the tamanhoPop
+	 */
+	public int getTamanhoPop() {
+		return tamanhoPop;
+	}
+
+	/**
+	 * @param tamanhoPop the tamanhoPop to set
+	 */
+	public void setTamanhoPop(int tamanhoPop) {
+		this.tamanhoPop = tamanhoPop;
+	}
+
+	/**
+	 * @return the operadorMutacao
+	 */
+	public MutacaoBinaria getOperadorMutacao() {
+		return operadorMutacao;
+	}
+
+	/**
+	 * @return the operadorCruzamento
+	 */
+	public CrossoverUmPonto getOperadorCruzamento() {
+		return operadorCruzamento;
+	}
+
 	@Override
 	public void executar() {
 		List<SolucaoBinaria> pop = inicializar();
@@ -43,7 +86,7 @@ public class GA extends AE<SolucaoBinaria>{
 	@Override
 	public List<SolucaoBinaria> inicializar() {
 		List<SolucaoBinaria> populacao = new ArrayList<>();
-		for (int i = 0; i < 50; i++){
+		for (int i = 0; i < this.tamanhoPop; i++){
 			SolucaoBinaria individuo = new SolucaoBinaria(10);
 			for(int j = 0; j < individuo.getN(); j++) {
 				individuo.setValor(j, new Random().nextInt(2));
@@ -101,12 +144,12 @@ public class GA extends AE<SolucaoBinaria>{
 		SolucaoBinaria[] paisEmbaralhados = new SolucaoBinaria[pais.length];
 		paisEmbaralhados = paisAux.toArray(paisEmbaralhados);
 		
-		CrossoverUmPonto cup = new CrossoverUmPonto();
-		cup.setPr(0.7);
+		operadorCruzamento = new CrossoverUmPonto();
+//		operadorCruzamento.setPr(0.7);
 		SolucaoBinaria[] filhos = new SolucaoBinaria[pais.length];
 		
 		for(int i = 0; i < paisEmbaralhados.length; i += 2) {
-			SolucaoBinaria[] filhosDaVez = cup.recombinar(paisEmbaralhados[i], paisEmbaralhados[i + 1]);
+			SolucaoBinaria[] filhosDaVez = operadorCruzamento.recombinar(paisEmbaralhados[i], paisEmbaralhados[i + 1]);
 			filhos[i] = filhosDaVez[0];
 			filhos[i + 1] = filhosDaVez[1];
 		}
@@ -116,9 +159,9 @@ public class GA extends AE<SolucaoBinaria>{
 
 	@Override
 	public SolucaoBinaria executarMutacao(SolucaoBinaria pai) {
-		MutacaoBinaria mb = new MutacaoBinaria();
-		mb.setPm(1d/(double)pai.getN());
-		return mb.executarMutacao(pai);
+//		operadorMutacao = new MutacaoBinaria();
+//		operadorMutacao.setPm(1d/(double)pai.getN());
+		return operadorMutacao.executarMutacao(pai);
 	}
 	
 	public static void main(String[] args) {

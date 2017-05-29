@@ -26,8 +26,8 @@ public class ManipuladorArquivo {
         return conteudo;
     }
  
-    public static void escritor(String path, String conteudo) throws IOException {
-        BufferedWriter buffWrite = new BufferedWriter(new FileWriter(path));
+    public static void escritor(String filePath, String conteudo) throws IOException {
+        BufferedWriter buffWrite = new BufferedWriter(new FileWriter(filePath));
         
         buffWrite.append(conteudo);
         buffWrite.close();

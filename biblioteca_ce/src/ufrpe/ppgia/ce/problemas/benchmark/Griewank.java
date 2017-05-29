@@ -1,39 +1,30 @@
 package ufrpe.ppgia.ce.problemas.benchmark;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Comparator;
 import java.util.List;
 
 import ufrpe.ppgia.ce.base.Problema;
 import ufrpe.ppgia.ce.base.solucao.SolucaoReal;
 import ufrpe.ppgia.ce.programacaoEvolucionaria.PE;
+import ufrpe.ppgia.ce.util.GriewankFunction;
+import ufrpe.ppgia.ce.util.ManipuladorArquivo;
 
 public class Griewank extends PE implements Problema<SolucaoReal> {
-	private static final double[] x = new double[401];
+	private int cont = 1, contAvaliacoes = 0;
+	
+	private double melhorFitness = 200;
 
 	@Override
 	public void avaliar(SolucaoReal solucao) {
-		int cont = -200;
 		
-		for (int i = 0; i < x.length; i++) {
-			x [i] = cont;
-			cont++;
-		}
+		GriewankFunction griewankFunction = new GriewankFunction();
 		
-		int indice = 0;
-		double valor = Math.ceil(solucao.getValor(0));
+		solucao.setFitness(griewankFunction.apply(solucao.getCromossomo()));
 		
-		for (int i = 0; i < x.length; i++) {
-			if (valor == x[i]) {
-				indice  = i+1;
-				break;
-			}
-		}
-		
-		double p1 = (1+(1/4000) * Math.pow(valor, 2) - Math.cos(valor/Math.sqrt(indice)));
-		solucao.setFitness(p1);
+		this.contAvaliacoes++;
 	}
-	
-	
 	
 	@Override
 	public boolean parar(List<SolucaoReal> pop) {
@@ -42,27 +33,110 @@ public class Griewank extends PE implements Problema<SolucaoReal> {
 		 */
 		pop.sort(Comparator.comparingDouble(SolucaoReal::getFitness));
 		
-		System.out.println("Melhor Fitnessssss: " + pop.get(0).getFitness());
+		double melhorFitnessAtual = pop.get(0).getFitness();
 		
-		return pop.get(0).getFitness() == 0;
+		if (melhorFitnessAtual < this.melhorFitness)
+			this.melhorFitness = melhorFitnessAtual;
+		
+		System.out.println(" Fitness: " + melhorFitnessAtual);
+		
+		return Math.abs(melhorFitnessAtual - 0) < 0.009;
+	}
+	
+	private String executar(int quantidadeVezes, int tamanhoPop, double pm, double pc) {
+		
+		this.getOperadorMutacao().setPm(pm);
+//		this.getOperadorCruzamento().setPr(pc);
+		this.setTamanhoPop(tamanhoPop);
+		
+		double melhorTempo = 10000.0; // Unidade em milisegundos (10000 = 10 segundos)
+		this.melhorFitness = 200; // Resetando o melhor fitness
+		
+		for(int i = 0; i < quantidadeVezes; i++) {
+			long timeIn = System.nanoTime();
+			
+			this.executar();
+			
+			double deltaTime = ( System.nanoTime() - timeIn ) / (1e6); // Convertendo de nanosegundo para milesegundo
+			
+			if (deltaTime < melhorTempo) {
+				melhorTempo = deltaTime;
+			}
+			
+		}// Fim for
+		
+		System.out.println("\n#########################");
+		System.out.println("Execucao: " + cont++);
+		System.out.println("Melhor fitness geral: " + this.melhorFitness);
+		System.out.println("Melhor tempo geral: " + melhorTempo + " ms");
+		
+		try {
+			Thread.sleep(2000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return this.melhorFitness + "," + melhorTempo + "," + contAvaliacoes + "\n";
+		
 	}
 
 	public static void main(String[] args) {
 		
-		Griewank test = new Griewank();
+		Griewank griewankObject = new Griewank();
 		
-		for(int i = 0; i < 30; i++) {
-			long timeIn = System.nanoTime();
+		int quantidadeExecucao = 30, 
+				populacao1 = 50, 
+				populacao2 = 100, 
+				populacao3 = 150;
+		
+		double pm1 = 0.03, 
+				pm2 = 0.06, 
+				pm3 = 0.1;
+		
+		double pc1 = 0.8,
+				pc2 = 0.9, 
+				pc3 = 0.95; 
+		
+		String resultados = "";
+		
+		resultados += griewankObject.executar(quantidadeExecucao, populacao1, pm1, pc1);
+		resultados += griewankObject.executar(quantidadeExecucao, populacao1, pm1, pc2);
+		resultados += griewankObject.executar(quantidadeExecucao, populacao1, pm1, pc3);
+		resultados += griewankObject.executar(quantidadeExecucao, populacao1, pm2, pc1);
+		resultados += griewankObject.executar(quantidadeExecucao, populacao1, pm2, pc2);
+		resultados += griewankObject.executar(quantidadeExecucao, populacao1, pm2, pc3);
+		resultados += griewankObject.executar(quantidadeExecucao, populacao1, pm3, pc1);
+		resultados += griewankObject.executar(quantidadeExecucao, populacao1, pm3, pc2);
+		resultados += griewankObject.executar(quantidadeExecucao, populacao1, pm3, pc3);
+		resultados += griewankObject.executar(quantidadeExecucao, populacao2, pm1, pc1);
+		resultados += griewankObject.executar(quantidadeExecucao, populacao2, pm1, pc2);
+		resultados += griewankObject.executar(quantidadeExecucao, populacao2, pm1, pc3);
+		resultados += griewankObject.executar(quantidadeExecucao, populacao2, pm2, pc1);
+		resultados += griewankObject.executar(quantidadeExecucao, populacao2, pm2, pc2);
+		resultados += griewankObject.executar(quantidadeExecucao, populacao2, pm2, pc3);
+		resultados += griewankObject.executar(quantidadeExecucao, populacao2, pm3, pc1);
+		resultados += griewankObject.executar(quantidadeExecucao, populacao2, pm3, pc2);
+		resultados += griewankObject.executar(quantidadeExecucao, populacao2, pm3, pc3);
+		resultados += griewankObject.executar(quantidadeExecucao, populacao3, pm1, pc1);
+		resultados += griewankObject.executar(quantidadeExecucao, populacao3, pm1, pc2);
+		resultados += griewankObject.executar(quantidadeExecucao, populacao3, pm1, pc3);
+		resultados += griewankObject.executar(quantidadeExecucao, populacao3, pm2, pc1);
+		resultados += griewankObject.executar(quantidadeExecucao, populacao3, pm2, pc2);
+		resultados += griewankObject.executar(quantidadeExecucao, populacao3, pm2, pc3);
+		resultados += griewankObject.executar(quantidadeExecucao, populacao3, pm3, pc1);
+		resultados += griewankObject.executar(quantidadeExecucao, populacao3, pm3, pc2);
+		resultados += griewankObject.executar(quantidadeExecucao, populacao3, pm3, pc3);
+		
+		System.out.println("\n####### resultados #####\n" + resultados);
+		
+		try {
+			ManipuladorArquivo.escritor(System.getProperty("user.home") + File.separator + "ResultadosGA.csv", resultados);
 			
-			test.executar();
-			
-			double dt = (System.nanoTime() - timeIn) * (1e6);
-			
-			System.out.println("Total Time: " + dt);
-			
-			
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
-	}
+		
+	}// Fim main
 	
-	
-}
+}// Fim classe

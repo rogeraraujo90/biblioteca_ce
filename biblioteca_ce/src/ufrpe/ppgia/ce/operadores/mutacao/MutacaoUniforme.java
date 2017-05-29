@@ -10,7 +10,7 @@ public class MutacaoUniforme implements OperadorMutacao<SolucaoReal> {
 	@Override
 	public SolucaoReal executarMutacao(SolucaoReal pai) {
 		/*
-		 * Recebe um pai e retorna um novo indivíduo multado a partir dos gentes do pai
+		 * Recebe um pai e retorna um novo indivíduo mutado a partir dos gentes do pai
 		 * */
 		
 		/*
@@ -39,7 +39,7 @@ public class MutacaoUniforme implements OperadorMutacao<SolucaoReal> {
 		return mutacao;
 	}
 	
-	public void setPM(double pm) {
+	public void setPm(double pm) {
 		this.PM = pm;
 	}
 

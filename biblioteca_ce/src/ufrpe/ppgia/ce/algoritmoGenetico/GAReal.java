@@ -9,12 +9,57 @@ import java.util.Random;
 
 import ufrpe.ppgia.ce.base.AE;
 import ufrpe.ppgia.ce.base.solucao.SolucaoReal;
+import ufrpe.ppgia.ce.operadores.mutacao.MutacaoBinaria;
 import ufrpe.ppgia.ce.operadores.mutacao.MutacaoUniforme;
+import ufrpe.ppgia.ce.operadores.recombinacao.CrossoverUmPonto;
 import ufrpe.ppgia.ce.operadores.recombinacao.RecombinacaoAritmetica;
 import ufrpe.ppgia.ce.operadores.selecaoDeSobreviventes.SelecaoFPSReal;
 
 public class GAReal extends AE<SolucaoReal>{
 	
+	/**
+	 * Por padrão a probalidade de mutação é 0.1 
+	 */
+	private MutacaoUniforme operadorMutacao = new MutacaoUniforme();
+	
+	/**
+	 * Por padrão a probalidade de cruzamento é 1 
+	 */
+	private RecombinacaoAritmetica operadorCruzamento = new RecombinacaoAritmetica();
+	
+	/**
+	 * Por padrão o tamanho da população é 100 
+	 */
+	private int tamanhoPop = 100;
+	
+	/**
+	 * @return the tamanhoPop
+	 */
+	public int getTamanhoPop() {
+		return tamanhoPop;
+	}
+
+	/**
+	 * @param tamanhoPop the tamanhoPop to set
+	 */
+	public void setTamanhoPop(int tamanhoPop) {
+		this.tamanhoPop = tamanhoPop;
+	}
+
+	/**
+	 * @return the operadorMutacao
+	 */
+	public MutacaoUniforme getOperadorMutacao() {
+		return operadorMutacao;
+	}
+
+	/**
+	 * @return the operadorCruzamento
+	 */
+	public RecombinacaoAritmetica getOperadorCruzamento() {
+		return operadorCruzamento;
+	}
+
 	@Override
 	public void executar() {
 		List<SolucaoReal> pop = inicializar();
@@ -22,8 +67,10 @@ public class GAReal extends AE<SolucaoReal>{
 			avaliar(individuo);
 		}
 		
-		int iteracao = 1;
-		while (!parar(pop)) {
+		int iteracao = 0;
+		System.out.print("Iteracao: " + iteracao);
+		
+		while (!parar(pop) && iteracao < 1000) {
 			iteracao++;
 			SolucaoReal[] pais = selecionarPais(pop);
 			SolucaoReal[] descendentes = recombinar(pais);
@@ -34,18 +81,19 @@ public class GAReal extends AE<SolucaoReal>{
 			}
 			
 			pop = selecionarSovreviventes(pop, descendentes);
+			
+			System.out.print("Iteracao: " + iteracao);
 		}
 		
-		System.out.println("Número de Iterações: " + iteracao);
 		
-		pop.sort(Comparator.comparingDouble(SolucaoReal::getFitness));
-		System.out.println("Melhor Fitness " +  pop.get(0).getFitness());
+//		pop.sort(Comparator.comparingDouble(SolucaoReal::getFitness));
+//		System.out.println("Melhor Fitness " +  pop.get(0).getFitness());
 	}
 
 	@Override
 	public List<SolucaoReal> inicializar() {
 		List<SolucaoReal> populacao = new ArrayList<>();
-		for (int i = 0; i < 50; i++){
+		for (int i = 0; i < this.tamanhoPop; i++){
 			SolucaoReal individuo = new SolucaoReal(10);
 			for(int j = 0; j < individuo.getN(); j++) {
 				individuo.setValor(j, (double) new Random().nextDouble());
@@ -103,12 +151,12 @@ public class GAReal extends AE<SolucaoReal>{
 		SolucaoReal[] paisEmbaralhados = new SolucaoReal[pais.length];
 		paisEmbaralhados = paisAux.toArray(paisEmbaralhados);
 		
-		RecombinacaoAritmetica cup = new RecombinacaoAritmetica();
-		cup.setPr(0.6d);
+		operadorCruzamento = new RecombinacaoAritmetica();
+//		operadorCruzamento.setPr(0.6d);
 		SolucaoReal[] filhos = new SolucaoReal[pais.length];
 		
 		for(int i = 0; i < paisEmbaralhados.length; i += 2) {
-			SolucaoReal[] filhosDaVez = cup.recombinar(paisEmbaralhados[i], paisEmbaralhados[i + 1]);
+			SolucaoReal[] filhosDaVez = operadorCruzamento.recombinar(paisEmbaralhados[i], paisEmbaralhados[i + 1]);
 			filhos[i] = filhosDaVez[0];
 			filhos[i + 1] = filhosDaVez[1];
 		}
@@ -118,8 +166,8 @@ public class GAReal extends AE<SolucaoReal>{
 
 	@Override
 	public SolucaoReal executarMutacao(SolucaoReal pai) {
-		MutacaoUniforme operadorMutacao = new MutacaoUniforme();
-		operadorMutacao.setPM(1d/(double)pai.getN());
+//		operadorMutacao = new MutacaoUniforme();
+//		operadorMutacao.setPM(1d/(double)pai.getN());
 		return operadorMutacao.executarMutacao(pai);
 	}
 	

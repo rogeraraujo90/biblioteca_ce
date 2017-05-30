@@ -9,7 +9,7 @@ import ufrpe.ppgia.ce.base.solucao.SolucaoReal;
 
 public class RecombinacaoAritmetica implements OperadorRecombinacao<SolucaoReal> {
 	private Random random = new Random();
-	private double pr = 0.7; 
+	private double pr = 1d; 
 	
 	public void setPr(double pr) {
 		this.pr = pr;

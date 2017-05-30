@@ -5,7 +5,7 @@ import ufrpe.ppgia.ce.base.solucao.SolucaoReal;
 
 public class MutacaoUniforme implements OperadorMutacao<SolucaoReal> {
 	
-	private double PM = 0.1;
+	private double PM = 0.1d;
 
 	@Override
 	public SolucaoReal executarMutacao(SolucaoReal pai) {

@@ -66,9 +66,7 @@ public class GAReal extends AE<SolucaoReal>{
 		}
 		
 		int iteracao = 0;
-		System.out.print("Iteracao: " + iteracao);
-		
-		while (!parar(pop) && iteracao < 1000) {
+		while (!parar(pop) && iteracao < 10000) {
 			iteracao++;
 			SolucaoReal[] pais = selecionarPais(pop);
 			SolucaoReal[] descendentes = recombinar(pais);
@@ -79,13 +77,11 @@ public class GAReal extends AE<SolucaoReal>{
 			}
 			
 			pop = selecionarSovreviventes(pop, descendentes);
-			
-			System.out.print("Iteracao: " + iteracao);
 		}
 		
-		
-//		pop.sort(Comparator.comparingDouble(SolucaoReal::getFitness));
-//		System.out.println("Melhor Fitness " +  pop.get(0).getFitness());
+		System.out.println("Iteracao: " + iteracao);
+		pop.sort(Comparator.comparingDouble(SolucaoReal::getFitness));
+		System.out.println("Melhor Fitness " +  pop.get(0).getFitness());
 	}
 
 	@Override
@@ -158,8 +154,6 @@ public class GAReal extends AE<SolucaoReal>{
 		SolucaoReal[] paisEmbaralhados = new SolucaoReal[pais.length];
 		paisEmbaralhados = paisAux.toArray(paisEmbaralhados);
 		
-		operadorCruzamento = new RecombinacaoAritmetica();
-//		operadorCruzamento.setPr(0.6d);
 		SolucaoReal[] filhos = new SolucaoReal[pais.length];
 		
 		for(int i = 0; i < paisEmbaralhados.length; i += 2) {
@@ -173,8 +167,6 @@ public class GAReal extends AE<SolucaoReal>{
 
 	@Override
 	public SolucaoReal executarMutacao(SolucaoReal pai) {
-//		operadorMutacao = new MutacaoUniforme();
-//		operadorMutacao.setPM(1d/(double)pai.getN());
 		return operadorMutacao.executarMutacao(pai);
 	}
 	
